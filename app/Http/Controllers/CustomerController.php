@@ -106,11 +106,16 @@ class CustomerController extends Controller
             'service_id' => ['required', 'exists:services,id'],
         ]);
 
-        $tickets = Ticket::all()->where('')->last();
         $service_id = $request->post('service_id');
         $service = Service::find($service_id);
         $service_name = $service->name;
-        $tickets_number = 0;
+
+        $tickets = Ticket::all()
+            ->where('status', '=', 'open')
+            ->where('service_id', '=', $service_id)
+            ->last();
+
+        $tickets_number = 1;
         if ($tickets !== null):
             $tickets_number = $tickets->number + 1;
         endif;
@@ -139,7 +144,7 @@ class CustomerController extends Controller
         // Msg
         $msg = 'New Reservation Booked Successfully.';
         // Pref
-        $pref = "Your reservation number is $tickets_number !<br>Ticket Booked for : $service_name";
+        $pref = "Your reservation number is $tickets_number !<br>Ticket Booked for : $service_name service.";
         $status = ['msg' => $msg, 'pref' => $pref];
 
         return redirect()->back()->with('success', $status);
