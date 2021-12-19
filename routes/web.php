@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\CustomerController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -18,28 +17,18 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth'])->name('dashboard');
-
 Route::group([
     'prefix' => '/dashboard',
     'namespace' => 'Dashboard',
     'middleware' => ['auth'],
-], function () {
+], static function () {
 
-    Route::group([
-        'prefix' => '/customer',
-        'middleware' => 'role:customer',
-        'as' => 'customer.',
-    ], function () {
-        Route::get('/', [CustomerController::class, 'create_tickets'])
-            ->name('create_tickets');
+    Route::get('/', function () {
+        return view('dashboard');
+    })->name('dashboard');
 
-        Route::post('/', [CustomerController::class, 'store_ticket'])
-            ->name('store_ticket');
-    });
+    require __DIR__ . '/customer.php';
+    require __DIR__ . '/employee.php';
 });
 
 //require __DIR__.'/auth.php';

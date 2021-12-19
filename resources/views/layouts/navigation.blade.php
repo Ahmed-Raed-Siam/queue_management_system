@@ -23,7 +23,7 @@
                     @endif
 
                     @if(\Illuminate\Support\Facades\Auth::user()->role_id===2)
-                        <x-nav-link :href="route('dashboard')" :active="request()->routeIs('employee')">
+                        <x-nav-link :href="route('employee.tickets')" :active="request()->routeIs('employee.tickets')">
                             {{ __('Employee') }}
                         </x-nav-link>
                     @endif

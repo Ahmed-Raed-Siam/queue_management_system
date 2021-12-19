@@ -161,6 +161,10 @@ class CustomerController extends Controller
             'number' => $tickets_number,
         ]);
 
+        $reservation = $ticket->reservation()->create([
+            'ticket_id' => $ticket->id
+        ]);
+
 //        dd(
 //            $request->all(),
 //            $service,
@@ -174,6 +178,8 @@ class CustomerController extends Controller
 //            $service_waiting_time,
 //            $total_tickets,
 //            $your_waiting_time,
+//            'Reservation',
+//            $reservation,
 //        );
 
         // Msg
