@@ -109,6 +109,7 @@ class CustomerController extends Controller
         $service_id = $request->post('service_id');
         $service = Service::find($service_id);
         $service_name = $service->name;
+        $service_waiting_time = $service->waiting_time;
 
 //        dd(
 //            $request->all(),
@@ -133,12 +134,15 @@ class CustomerController extends Controller
             ->whereDate('created_at', Carbon::today())
             ->where('status', '=', 'open')
             ->where('service_id', '=', $service_id)
-            ->get()
-            ->last();
+            ->get();
+
+        $total_tickets = $tickets->count();
+        $your_waiting_time = $total_tickets * $service_waiting_time;
+        $last_ticket = $tickets->last();
 
         $tickets_number = null;
-        if ($tickets !== null):
-            $tickets_number = $tickets->number + 1;
+        if ($last_ticket !== null):
+            $tickets_number = $last_ticket->number + 1;
         else:
             $tickets_number = 1;
         endif;
@@ -157,18 +161,25 @@ class CustomerController extends Controller
             'number' => $tickets_number,
         ]);
 
-        dd(
-            $request->all(),
-            $service,
-            $tickets,
-            $ticket,
-            $tickets_number,
-        );
+//        dd(
+//            $request->all(),
+//            $service,
+//            'tickets',
+//            $tickets,
+//            '$last_ticket',
+//            $last_ticket,
+//            $ticket,
+//            $tickets_number,
+//            '$service_waiting_time',
+//            $service_waiting_time,
+//            $total_tickets,
+//            $your_waiting_time,
+//        );
 
         // Msg
         $msg = 'New Reservation Booked Successfully.';
         // Pref
-        $pref = "Your reservation number is $tickets_number !<br>Ticket Booked for : $service_name service.";
+        $pref = "Your reservation number is $tickets_number from $total_tickets !<br>Ticket Booked for : $service_name service ,Your waiting time is $your_waiting_time.";
         $status = ['msg' => $msg, 'pref' => $pref];
 
         return redirect()->back()->with('success', $status);
