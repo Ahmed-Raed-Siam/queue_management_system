@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Service;
-use App\Models\Ticket;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
@@ -110,14 +110,37 @@ class CustomerController extends Controller
         $service = Service::find($service_id);
         $service_name = $service->name;
 
-        $tickets = Ticket::all()
+//        dd(
+//            $request->all(),
+//            $service,
+//            $tickets = Service::with('tickets')->getRelation('tickets')
+//                ->whereDate('created_at', Carbon::today())
+//                ->where('status', '=', 'open')
+//                ->where('service_id', '=', $service_id)
+//                ->get()
+//                ->last(),
+////            $tickets_number,
+//        );
+
+        /*        $tickets = Ticket::whereDate('created_at', Carbon::today())
+                    ->where('status', '=', 'open')
+                    ->where('service_id', '=', $service_id)
+                    ->get()
+                    ->last();*/
+
+        /*OR*/
+        $tickets = Service::with('tickets')->getRelation('tickets')
+            ->whereDate('created_at', Carbon::today())
             ->where('status', '=', 'open')
             ->where('service_id', '=', $service_id)
+            ->get()
             ->last();
 
-        $tickets_number = 1;
+        $tickets_number = null;
         if ($tickets !== null):
             $tickets_number = $tickets->number + 1;
+        else:
+            $tickets_number = 1;
         endif;
 
 //        dd(
@@ -127,19 +150,20 @@ class CustomerController extends Controller
 //            $tickets_number,
 //        );
 
-        $ticket = Ticket::create([
+        $ticket = $service->tickets()->create([
             'user_id' => $user_id,
             'service_id' => $service_id,
             'status' => 'open',
             'number' => $tickets_number,
         ]);
-//        dd(
-//            $request->all(),
-//            $service,
-//            $tickets,
-//            $ticket,
-//            $tickets_number,
-//        );
+
+        dd(
+            $request->all(),
+            $service,
+            $tickets,
+            $ticket,
+            $tickets_number,
+        );
 
         // Msg
         $msg = 'New Reservation Booked Successfully.';
