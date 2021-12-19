@@ -42,7 +42,7 @@
 
                 <!-- Sign Up -->
                 <label class="inline-flex items-center">
-                    <a class="underline text-sm text-gray-600 hover:text-gray-900" href="https://callaapp.com/register">
+                    <a class="underline text-sm text-gray-600 hover:text-gray-900" href="{{ route('register') }}">
                         Sign Up
                     </a>
                 </label>
