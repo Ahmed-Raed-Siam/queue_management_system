@@ -59,7 +59,7 @@
 
                                     <tbody>
                                     <!-- Ticket -->
-{{--                                    @dd($tickets)--}}
+                                    {{--                                    @dd($tickets)--}}
                                     @foreach($tickets as $ticket)
                                         @php($counter++)
 
@@ -67,7 +67,7 @@
                                         <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                                             <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                                 {{ $ticket->getRelation('ticket')->getRelation('user')->name }}
-{{--                                                @dd($ticket->getRelation('ticket')->getRelation('user')->name)--}}
+                                                {{--                                                @dd($ticket->getRelation('ticket')->getRelation('user')->name)--}}
                                             </td>
                                             <td class="py-4 px-6 text-sm text-gray-500 whitespace-nowrap dark:text-gray-400">
                                                 {{ $ticket->getRelation('ticket')->getRelation('service')->name }}
@@ -76,40 +76,41 @@
                                                 {{ $ticket->getRelation('ticket')->number }}
                                             </td>
                                             <td class="hover:bg-grey-lighter">
-                                                <form class="py-4 px-6 text-sm font-medium text-right whitespace-nowrap font-bold py-1 px-3 rounded text-xs bg-green hover:bg-green-dark"
-                                                      action="{{ route('employee.tickets', ['ticket' => $ticket->getRelation('ticket')->id]) }}"
-                                                      method="POST">
+                                                <form
+                                                    class="py-4 px-6 text-sm font-medium text-right whitespace-nowrap font-bold py-1 px-3 rounded text-xs bg-green hover:bg-green-dark"
+                                                    action="{{ route('employee.update_ticket_status', $ticket->getRelation('ticket')->id) }}"
+                                                    method="POST">
                                                     @csrf
-                                                    @method('DELETE')
                                                     {{ csrf_field() }}
                                                     <i class="fas fa-trash-alt">
                                                     </i>
-                                                    <input name="delete" type="submit" class="text-grey-lighter font-bold py-1 px-3 rounded text-xs bg-green hover:bg-green-dark"
-                                                           value="Delete"
+                                                    <input name="missing" type="submit"
+                                                           class="text-grey-lighter font-bold py-1 px-3 rounded text-xs bg-green hover:bg-green-dark"
+                                                           value="missing"
                                                            data-toggle="tooltip" data-placement="top"
-                                                           title="Delete User {{ $counter-1 }}">
+                                                           title="Complete Reservation for User {{ $counter-1 }}">
                                                 </form>
-{{--                                                <a href="#"--}}
-{{--                                                   class="text-blue-600 hover:text-blue-900 dark:text-blue-500 dark:hover:underline">--}}
-{{--                                                    Complete--}}
-{{--                                                </a>--}}
+                                                <form
+                                                    class="py-4 px-6 text-sm font-medium text-right whitespace-nowrap font-bold py-1 px-3 rounded text-xs bg-green hover:bg-green-dark"
+                                                    action="{{ route('employee.update_ticket_status', $ticket->getRelation('ticket')->id) }}"
+                                                    method="POST">
+                                                    @csrf
+                                                    {{ csrf_field() }}
+                                                    <i class="fas fa-trash-alt">
+                                                    </i>
+                                                    <input name="complete" type="submit"
+                                                           class="text-grey-lighter font-bold py-1 px-3 rounded text-xs bg-green hover:bg-green-dark"
+                                                           value="complete"
+                                                           data-toggle="tooltip" data-placement="top"
+                                                           title="Complete Reservation for User {{ $counter-1 }}">
+                                                </form>
+                                                {{--                                                <a href="#"--}}
+                                                {{--                                                   class="text-blue-600 hover:text-blue-900 dark:text-blue-500 dark:hover:underline">--}}
+                                                {{--                                                    Complete--}}
+                                                {{--                                                </a>--}}
                                             </td>
                                         </tr>
                                     @endforeach
-{{--                                    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                                        <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                            Apple MacBook Pro 17"
-                                        </td>
-                                        <td class="py-4 px-6 text-sm text-gray-500 whitespace-nowrap dark:text-gray-400">
-                                            Sliver
-                                        </td>
-                                        <td class="py-4 px-6 text-sm text-gray-500 whitespace-nowrap dark:text-gray-400">
-                                            Laptop
-                                        </td>
-                                        --}}{{--<td class="py-4 px-6 text-sm text-gray-500 whitespace-nowrap dark:text-gray-400">--}}{{--
-                                        --}}{{--    $2999--}}{{--
-                                        --}}{{--</td>--}}{{--
-                                    </tr>--}}
                                     </tbody>
                                 </table>
                             </div>

@@ -11,8 +11,8 @@ Route::group([
     Route::get('/', [EmployeeController::class, 'index'])
         ->name('tickets');
 
-    Route::post('/', [EmployeeController::class, 'store_ticket'])
-        ->name('store_ticket');
+    Route::post('/{id}', [EmployeeController::class, 'update_ticket_status'])
+        ->name('update_ticket_status');
 });
 
 ?>
